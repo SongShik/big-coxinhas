@@ -2,26 +2,28 @@ import { supabase } from "@/app/lib/supabase"
 import { Session } from "next-auth"
 import { JWT } from "next-auth/jwt"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { AuthOptions } from "next-auth";
 
-declare module 'next-auth' {
+declare module "next-auth" {
   interface Session {
     user?: {
-      id?: string
-      name?: string
-      email?: string
-      role?: string
-    }
+      id?: string;
+      name?: string | null;
+      email?: string | null;
+      role?: string;
+    };
   }
 }
-interface CustomToken extends JWT {
-  id?: string
-  name?: string
-  email?: string
-  role?: string
+
+export interface CustomToken extends JWT {
+  id?: string;
+  name?: string | null;
+  email?: string | null;
+  role?: string;
 }
 
 
-export const authOptions = {
+export const authOptions: AuthOptions  = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -65,7 +67,8 @@ export const authOptions = {
     })
   ],
   session: {
-    strategy: "jwt"
+    strategy: 'jwt',
+    maxAge: 60 * 60,
   },
   callbacks: {
     async jwt({ token, user } : { token: CustomToken, user: Session['user'] }) {
