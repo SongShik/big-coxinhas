@@ -1,8 +1,8 @@
-import { supabase } from "@/app/lib/supabase"
 import { Session } from "next-auth"
 import { JWT } from "next-auth/jwt"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { AuthOptions } from "next-auth";
+import { supabase } from "@/lib/supabase"
 
 declare module "next-auth" {
   interface Session {
@@ -44,24 +44,21 @@ export const authOptions: AuthOptions  = {
           password: credentials.password,
         })
 
-        console.log('🔥🔥🔥🔥 Supabase 1:', data)
-        console.log('🔥🔥🔥🔥 Supabase 1:', data?.user?.id)
         if (error || !data.user) { return null }
 
-        const { data: teste } = await supabase
+        const { data: userProfile } = await supabase
           .from('profiles')
           .select('*')
           .eq('user_id', data.user.id)
           .single()
 
-        console.log('🔥🔥🔥🔥 Supabase 2:', teste)
         if (error || !data.user) return null
 
         return {
           id: data.user.id,
           email: data.user.email,
-          name: teste?.name,
-          role: teste?.role
+          name: userProfile?.name,
+          role: userProfile?.role
         }
       }
     })
@@ -78,7 +75,6 @@ export const authOptions: AuthOptions  = {
         token.name = user.name
         token.role = user.role
       }
-
       return token
     },
     async session({ session, token } : { session: Session, token: CustomToken }) {
@@ -90,6 +86,5 @@ export const authOptions: AuthOptions  = {
       }
       return session
     }
-
   },
 }
