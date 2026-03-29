@@ -1,11 +1,29 @@
+import { columns } from "@/components/table/columns";
+import { DataTable } from "@/components/table/data-table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/lib/supabase";
 
 export default async function Produtos() {
-      const { data: products } = await supabase.from("product").select("*");
+  const { data: products } = await supabase.from("product").select("*");
 
-  return <div className="flex justify-center align-middle">
-      {products && products.map((p) => (
-        <div key={p.id}>{p.name}</div>
-      ))}
+  return <div className="">
+
+    <Card className="max-w-sm">
+      <CardHeader>
+        <CardTitle>Project Overview</CardTitle>
+        <CardDescription>
+          Track progress and recent activity for your Next.js app.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        Your design system is ready. Start building your next component.  
+        Your design system is ready. Start building your next component.  Your design system is ready. Start building your next component.
+      </CardContent>
+    </Card>
+
+    <div className="mt-6"></div>
+    {products &&
+      <DataTable columns={columns} data={products} />
+    }
   </div>;
 }

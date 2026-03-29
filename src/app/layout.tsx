@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 
-import "./globals.css";
 import Provider from "@/context/provider";
 import { cn } from "@/lib/utils";
+import "./globals.css";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +25,15 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  
+
   return (
     <html lang="pt-br"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
     >
-      <body className="min-h-full flex flex-col">
-        <Provider>{children}</Provider>
+      <body className="w-full px-4">
+        <div className="max-w-6xl mx-auto">
+          <Provider>{children}</Provider>
+        </div>
       </body>
     </html>
   );
