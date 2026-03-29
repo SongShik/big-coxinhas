@@ -32,6 +32,7 @@ export default function RootLayout({
     >
       <body className="w-full px-4">
         <div className="max-w-6xl mx-auto">
+          {/* cor de fundo fafafa */}
           <Provider>{children}</Provider>
         </div>
       </body>

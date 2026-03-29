@@ -1,4 +1,4 @@
-import { columns } from "@/components/table/columns";
+import { productsColumns } from "@/components/products/productsColumns";
 import { DataTable } from "@/components/table/data-table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/lib/supabase";
@@ -23,7 +23,7 @@ export default async function Produtos() {
 
     <div className="mt-6"></div>
     {products &&
-      <DataTable columns={columns} data={products} />
+      <DataTable columns={productsColumns} data={products} />
     }
   </div>;
 }

@@ -1,7 +1,5 @@
 'use client'
 
-import Image from "next/image";
-import { supabase } from '../app/lib/supabase'
 import { useSession } from "next-auth/react";
 
 

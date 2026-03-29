@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableColumnHeader } from "../table/data-table-column-header";
 
 export type Payment = {
   id: string
@@ -16,11 +16,7 @@ const currencyFormatter = new Intl.NumberFormat("pt-BR", {
   currency: "BRL",
 })
 
-export const columns: ColumnDef<Payment>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-  },
+export const productsColumns: ColumnDef<Payment>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -37,9 +33,5 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: "weight",
     header: "Peso",
-  },
-  {
-    accessorKey: "order",
-    header: "Ordem",
   },
 ]
