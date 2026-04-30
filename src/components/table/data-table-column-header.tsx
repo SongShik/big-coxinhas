@@ -1,7 +1,6 @@
 import { type Column } from "@tanstack/react-table"
 import { ArrowUpDown } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
 
 interface DataTableColumnHeaderProps<TData, TValue>
     extends React.HTMLAttributes<HTMLDivElement> {
@@ -15,12 +14,11 @@ export function DataTableColumnHeader<TData, TValue>({
 }: DataTableColumnHeaderProps<TData, TValue>) {
 
     return (
-        <Button
-            variant="ghost"
+        <div className="flex gap-2 align-middle"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
             {title}
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+            <ArrowUpDown className="h-4 w-4" />
+        </div>
     )
 }

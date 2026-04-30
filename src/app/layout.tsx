@@ -1,9 +1,10 @@
+import "./globals.css";
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
 
 import Provider from "@/context/provider";
 import { cn } from "@/lib/utils";
-import "./globals.css";
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -30,9 +31,8 @@ export default function RootLayout({
     <html lang="pt-br"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable)}
     >
-      <body className="w-full px-4">
+      <body className="w-full px-4!">
         <div className="max-w-6xl mx-auto">
-          {/* cor de fundo fafafa */}
           <Provider>{children}</Provider>
         </div>
       </body>

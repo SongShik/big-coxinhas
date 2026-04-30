@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -46,16 +46,24 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --color-laranja-700: #a9721b;
+  --color-laranja-600: #cb7224;
+  --color-laranja-500: #f3c273;
+  --color-laranja-400: #f3d8ad;
 }
 
 :root {
-  --background: oklch(1 0 0);
+  /* --primary: #a9721b; */
+  /* --primary: #cb7224; */
+  /* --primary: #f3c273; */
+  /* --primary: #f3d8ad; */
+  --background: #fafafa;
   --foreground: oklch(0.147 0.004 49.25);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.147 0.004 49.25);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.147 0.004 49.25);
-  --primary: oklch(0.555 0.163 48.998);
+  --primary: #f3c273;
   --primary-foreground: oklch(0.987 0.022 95.277);
   --secondary: oklch(0.967 0.001 286.375);
   --secondary-foreground: oklch(0.21 0.006 285.885);
@@ -123,7 +131,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
 
   html {

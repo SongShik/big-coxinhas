@@ -1,7 +1,8 @@
 import { Session } from "next-auth"
+import { AuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt"
 import CredentialsProvider from "next-auth/providers/credentials"
-import { AuthOptions } from "next-auth";
+
 import { supabase } from "@/lib/supabase"
 
 declare module "next-auth" {
