@@ -44,7 +44,7 @@ export const productsColumns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: 'action',
-    header: 'Ações',
+    header: 'Ação',
     cell: ({ row }) => {
       const router = useRouter()
       const id = row.original.id
