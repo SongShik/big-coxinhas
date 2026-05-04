@@ -45,7 +45,7 @@ export default function ProdutosCriar() {
     setLoading(true)
     setError(null)
     try {
-      const { error } = await supabase.from('product').insert({
+      const { error } = await supabase.from('products').insert({
         name: values.name,
         price: values.price,
         weight: values.weight,

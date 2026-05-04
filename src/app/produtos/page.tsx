@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabase'
 
 export default async function Produtos() {
-  const { data: products, error } = await supabase.from('product').select('*')
+  const { data: products, error } = await supabase.from('products').select('*')
 
   console.log(error)
   return (
