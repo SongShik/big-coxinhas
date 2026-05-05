@@ -52,7 +52,7 @@ export const productsColumns: ColumnDef<Payment>[] = [
         <Button
           variant="ghost"
           className="ml-auto hover:bg-laranja-500 hover:text-white text-laranja-500"
-          onClick={() => router.push(`/produtos/${id}`)}
+          onClick={() => router.push(`/produtos/editar/${id}`)}
         >
           <Pencil className="h-4 w-4" />
         </Button>

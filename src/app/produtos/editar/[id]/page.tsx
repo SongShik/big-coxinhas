@@ -1,7 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { Controller, Resolver, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -39,8 +40,11 @@ const formSchema = z.object({
 
 type FormOutput = z.infer<typeof formSchema>
 
-export default function ProdutosCriar() {
+export default function ProdutosEditar() {
   const router = useRouter()
+  const [loading, setloading] = useState(true)
+  const params = useParams()
+  const productId = params.id as string
 
   const {
     register,
@@ -58,27 +62,64 @@ export default function ProdutosCriar() {
     },
   })
 
+  useEffect(() => {
+    async function loadProduct() {
+      try {
+        const { data, error } = await supabase.from('products').select('*').eq('id', productId).single()
+
+        if (error) {
+          throw error
+        }
+
+        reset({
+          name: data.name,
+          price: data.price,
+          weight: data.weight,
+          order: data.order,
+        })
+      } catch (error) {
+        console.error(error)
+        toast.error('Erro ao carregar produto')
+        router.push('/produtos')
+      } finally {
+        setloading(false)
+      }
+    }
+
+    loadProduct()
+  }, [productId, reset, router])
+
   async function onSubmit(values: FormOutput) {
     try {
-      const { error } = await supabase.from('products').insert({
-        name: values.name,
-        price: values.price,
-        weight: values.weight,
-        order: values.order,
-      })
+      const { error } = await supabase
+        .from('products')
+        .update({
+          name: values.name,
+          price: values.price,
+          weight: values.weight,
+          order: values.order,
+        })
+        .eq('id', productId)
 
       if (error) {
-        console.error(error)
         throw error
       }
 
-      toast.success('Produto criado com sucesso')
+      toast.success('Produto atualizado com sucesso')
 
       router.push('/produtos')
     } catch (error) {
       console.error(error)
-      toast.error('Erro ao criar produto, tente novamente mais tarde')
+      toast.error('Erro ao atualizar produto')
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center mt-10">
+        <Spinner />
+      </div>
+    )
   }
 
   return (
@@ -86,8 +127,9 @@ export default function ProdutosCriar() {
       <div className="bg-background px-2 py-4 rounded-lg mt-6">
         <div className="flex justify-between md:items-center flex-col md:flex-row gap-4">
           <div>
-            <h1 className="md:text-3xl text-base font-medium">Produtos</h1>
-            <p className="text-muted-foreground md:mt-2 text-sm md:text-base">Cadastre novos produtos</p>
+            <h1 className="md:text-3xl text-base font-medium">Editar produto</h1>
+
+            <p className="text-muted-foreground md:mt-2 text-sm md:text-base">Atualize as informações do produto</p>
           </div>
         </div>
       </div>
@@ -97,7 +139,7 @@ export default function ProdutosCriar() {
           <FieldGroup>
             <Field data-invalid={!!errors.name}>
               <FieldLabel>Nome</FieldLabel>
-              <Input {...register('name')} autoComplete="off" />
+              <Input {...register('name')} autoComplete="off" disabled={isSubmitting} />
               {errors.name && <FieldError errors={[errors.name]} />}
             </Field>
           </FieldGroup>
@@ -109,6 +151,7 @@ export default function ProdutosCriar() {
               <Field data-invalid={!!errors.price}>
                 <FieldLabel>Preço</FieldLabel>
                 <Input
+                  disabled={isSubmitting}
                   inputMode="numeric"
                   value={field.value ? currencyFormatter.format(field.value) : ''}
                   onChange={(e) => {
@@ -123,7 +166,14 @@ export default function ProdutosCriar() {
           <FieldGroup>
             <Field data-invalid={!!errors.weight}>
               <FieldLabel>Peso (em gramas)</FieldLabel>
-              <Input type="number" min={0} {...register('weight', { valueAsNumber: true })} />
+              <Input
+                type="number"
+                min={0}
+                disabled={isSubmitting}
+                {...register('weight', {
+                  valueAsNumber: true,
+                })}
+              />
               {errors.weight && <FieldError errors={[errors.weight]} />}
             </Field>
           </FieldGroup>
@@ -131,7 +181,15 @@ export default function ProdutosCriar() {
           <FieldGroup>
             <Field data-invalid={!!errors.order}>
               <FieldLabel>Ordem de visualização na comanda</FieldLabel>
-              <Input type="number" min={0} step={1} {...register('order', { valueAsNumber: true })} />
+              <Input
+                type="number"
+                min={0}
+                step={1}
+                disabled={isSubmitting}
+                {...register('order', {
+                  valueAsNumber: true,
+                })}
+              />
               {errors.order && <FieldError errors={[errors.order]} />}
             </Field>
           </FieldGroup>
@@ -140,10 +198,10 @@ export default function ProdutosCriar() {
             {isSubmitting ? (
               <>
                 <Spinner className="mr-2" data-icon="inline-start" />
-                Enviando...
+                Salvando...
               </>
             ) : (
-              'Enviar'
+              'Salvar alterações'
             )}
           </Button>
         </form>

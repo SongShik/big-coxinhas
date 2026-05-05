@@ -2,6 +2,7 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Inter } from 'next/font/google'
+import { Toaster } from 'sonner'
 
 import MenuMobile from '@/components/modules/menuMobile'
 import Provider from '@/context/provider'
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <Provider>{children}</Provider>
           <MenuMobile />
         </div>
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   )
