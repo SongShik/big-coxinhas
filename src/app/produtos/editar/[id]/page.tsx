@@ -7,6 +7,7 @@ import { Controller, Resolver, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
+import { ModalApagar } from '@/components/modal/modalApagar'
 import { Button } from '@/components/ui/button'
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
@@ -45,6 +46,7 @@ export default function ProdutosEditar() {
   const [loading, setloading] = useState(true)
   const params = useParams()
   const productId = params.id as string
+  const [productName, setProductName] = useState<string | null>(null)
 
   const {
     register,
@@ -77,6 +79,7 @@ export default function ProdutosEditar() {
           weight: data.weight,
           order: data.order,
         })
+        setProductName(data.name)
       } catch (error) {
         console.error(error)
         toast.error('Erro ao carregar produto')
@@ -111,6 +114,29 @@ export default function ProdutosEditar() {
     } catch (error) {
       console.error(error)
       toast.error('Erro ao atualizar produto')
+    }
+  }
+
+  async function excluirProduto(id: string) {
+    try {
+      const { error } = await supabase
+        .from('products')
+        .update({
+          active: false,
+        })
+        .eq('id', id)
+        .eq('active', true)
+
+      if (error) {
+        throw error
+      }
+
+      toast.success('Produto excluído com sucesso')
+
+      router.push('/produtos')
+    } catch (error) {
+      console.error(error)
+      toast.error('Erro ao excluir produto')
     }
   }
 
@@ -194,7 +220,7 @@ export default function ProdutosEditar() {
             </Field>
           </FieldGroup>
 
-          <Button type="submit" disabled={isSubmitting} className="w-full">
+          <Button type="submit" disabled={isSubmitting} className="w-full" size="lg">
             {isSubmitting ? (
               <>
                 <Spinner className="mr-2" data-icon="inline-start" />
@@ -204,6 +230,7 @@ export default function ProdutosEditar() {
               'Salvar alterações'
             )}
           </Button>
+          <ModalApagar name={productName || 'Produto'} onConfirm={() => excluirProduto(productId)} />
         </form>
       </div>
     </>

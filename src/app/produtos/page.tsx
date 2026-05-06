@@ -1,15 +1,22 @@
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
 
-import { productsColumns } from '@/components/products/productsColumns'
-import { DataTable } from '@/components/table/data-table'
+import { ProductList } from '@/components/products/produtctsList'
 import { Button } from '@/components/ui/button'
 import { supabase } from '@/lib/supabase'
 
-export default async function Produtos() {
-  const { data: products, error } = await supabase.from('products').select('*')
+const currencyFormatter = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
+})
 
-  console.log(error)
+export default async function Produtos() {
+  const { data: products, error } = await supabase
+    .from('products')
+    .select('*')
+    .filter('active', 'eq', true)
+    .order('order', { ascending: true })
+
   return (
     <>
       <div className="bg-background px-2 py-4 rounded-lg mt-6">
@@ -26,12 +33,8 @@ export default async function Produtos() {
           </Button>
         </div>
       </div>
-      {products && (
-        <div className="bg-background px-2 py-4 rounded-lg mt-6">
-          <DataTable columns={productsColumns} data={products} />
-        </div>
-      )}
-      <div className="mt-6"></div>
+
+      {products && <ProductList products={products} />}
     </>
   )
 }

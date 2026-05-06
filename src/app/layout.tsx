@@ -31,11 +31,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       lang="pt-br"
       className={cn('h-full', 'antialiased', geistSans.variable, geistMono.variable, 'font-sans', inter.variable)}
     >
-      <body className="w-full px-4!">
-        <div className="max-w-6xl mx-auto">
+      <body className="w-full px-4! bg-[#fafafa]">
+        <div className="max-w-6xl mx-auto pb-16">
           <Provider>{children}</Provider>
-          <MenuMobile />
         </div>
+        <MenuMobile />
         <Toaster richColors position="top-center" />
       </body>
     </html>

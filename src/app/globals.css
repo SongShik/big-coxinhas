@@ -57,7 +57,7 @@
   /* --primary: #cb7224; */
   /* --primary: #f3c273; */
   /* --primary: #f3d8ad; */
-  --background: #fafafa;
+  --background: #ffffff;
   --foreground: oklch(0.147 0.004 49.25);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.147 0.004 49.25);
