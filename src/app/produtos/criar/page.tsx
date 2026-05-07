@@ -11,11 +11,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { supabase } from '@/lib/supabase'
-
-const currencyFormatter = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL',
-})
+import { currencyFormatter } from '@/utils/currencyFormatter'
 
 type FormValues = {
   name: string

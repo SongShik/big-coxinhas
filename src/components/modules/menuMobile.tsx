@@ -27,7 +27,7 @@ export default function MenuMobile() {
         Produtos
       </Link>
 
-      <Link href="/comandas/criar" className="flex flex-1 justify-center ">
+      <Link href="/comandas" className="flex flex-1 justify-center ">
         <div className="flex h-12 w-12 items-center justify-center rounded-md bg-laranja-500 text-white -mt-8 shadow-lg">
           <PlusIcon className="h-7 w-7" />
         </div>

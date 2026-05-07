@@ -24,27 +24,22 @@ export default async function Teste() {
 
       <div className="mt-6"></div>
       <h1 className="text-3xl">Roadmap Big coxinhas</h1>
-      <p className="text-base">login</p>
-      <p className="text-base">produto crud</p>
-      <p className="text-base">Cliente crud</p>
+      <p className="text-base">login 😁</p>
+      <p className="text-base">produto crud😁</p>
+      <p className="text-base">Cliente crud😁</p>
       <p className="text-base">Comanda crud</p>
       <p className="text-base">Pagamento crud</p>
       <p className="text-base">Calculo da massada</p>
+      <p className="text-base">Menu completo</p>
 
       <div className="mt-6"></div>
       <h1 className="text-3xl">Coisas a implementar</h1>
-      <p className="text-base">toltip ao salvar ou dar erro</p>
+      <p className="text-base">toltip ao salvar ou dar erro 😁</p>
 
       <p className="text-base">poder fazer cadastro via whatsapp</p>
       <p className="text-base">
         Dashbord na pagina inicial, contendo massada do dia, pedidos do dia, clientes do dia, pagamentos pendentes
       </p>
-      <p>Criar menu para mobile</p>
-      <p>dasbord</p>
-      <p>produtos</p>
-      <p>Comanda</p>
-      <p>Adicionar comanda</p>
-      <p>pagamentos</p>
     </>
   )
 }
