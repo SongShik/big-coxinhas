@@ -34,11 +34,11 @@ export default function MenuMobile() {
       </Link>
 
       <Link
-        href="/comandas"
-        className={`flex flex-1 flex-col items-center text-[9px] md:text-base ${isActive('/comandas') ? 'text-laranja-500' : 'text-muted-foreground'}`}
+        href="/clientes"
+        className={`flex flex-1 flex-col items-center text-[9px] md:text-base ${isActive('/clientes') ? 'text-laranja-500' : 'text-muted-foreground'}`}
       >
         <ReceiptText className="h-6 w-6" />
-        Comanda
+        Clientes
       </Link>
 
       <Link
