@@ -12,11 +12,12 @@ export default async function Comandas() {
     .from('comandas')
     .select(
       `
-    id:id,
-    data_order:date_order,
-    total_comanda:total_comanda,
-    clients:client_id (name)
-  `,
+      id:id,
+      data_order:date_order,
+      total_comanda:total_comanda,
+      clients:client_id (name),
+      payments (id, total)
+    `,
     )
     .filter('active', 'eq', true)
     .order('date_order', { ascending: true })
@@ -41,8 +42,6 @@ export default async function Comandas() {
           </Button>
         </div>
       </div>
-
-      {/* <pre>{JSON.stringify(comandas, null, 2)}</pre> */}
       {comandas && <ComandasList comandas={comandas} />}
     </>
   )

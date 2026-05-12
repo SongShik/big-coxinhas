@@ -40,6 +40,14 @@ export default async function Teste() {
       <p className="text-base">
         Dashbord na pagina inicial, contendo massada do dia, pedidos do dia, clientes do dia, pagamentos pendentes
       </p>
+      <p className="text-base">
+        Dashbord com sistema de notificações para pedidos prontos, pedidos atrasados, pedidos para hoje
+      </p>
+
+      <p className="text-base">Pagina de comandas coisas a fazer</p>
+      <p className="text-base">fazer a data aparecer como ontem, hoje, amanhã ou proximos dias</p>
+      <p className="text-base">integrar para pagamento, não pago, parcial, pago</p>
+      <p className="text-base">Filtros rapidos como hoje, ontem, amanhã e um data picker</p>
     </>
   )
 }

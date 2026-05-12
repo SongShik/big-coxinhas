@@ -1,16 +1,19 @@
 'use client'
 
-import { formatDate } from 'date-fns'
-import { ChevronLeft, ChevronRight, Pencil, SearchIcon } from 'lucide-react'
+import { ChevronLeft, ChevronRight, SearchIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Field } from '@/components/ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
-import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from '@/components/ui/item'
+import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { currencyFormatter } from '@/utils/currencyFormatter'
+
+import { AvatarIcon } from '../comandas/avatarIcon'
+import { DateBadge } from '../comandas/dateBadge'
+import PaymentBadge from '../comandas/paymentBadge'
 
 const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20]
 const DEFAULT_ITEMS_PER_PAGE = 10
@@ -20,6 +23,7 @@ interface Comandas {
   data_order: string
   total_comanda: number
   clients: any
+  payments: { id: string; total: number }[]
 }
 
 interface ComandasListProps {
@@ -79,20 +83,25 @@ export function ComandasList({ comandas }: ComandasListProps) {
         paginated.map((comanda) => (
           <Item asChild key={comanda.id} className="border-0 border-t border-muted rounded-none">
             <div>
+              <ItemMedia>
+                <AvatarIcon name={comanda.clients.name} />
+              </ItemMedia>
               <ItemContent>
-                <ItemTitle>
-                  {comanda.clients.name} • {formatDate(comanda.data_order, 'dd/MM')} • Hoje
+                <ItemTitle className="flex-col gap-1 items-start">
+                  {comanda.clients.name}
+                  <DateBadge date={new Date(comanda.data_order)} />
                 </ItemTitle>
-                <ItemDescription>
-                  <span className="text-laranja-500">{currencyFormatter.format(comanda.total_comanda)}</span>
-                  <span className="mx-2 text-laranja-500">•</span>
-                  <span>Não pago</span>
+                <ItemDescription className="flex justify-between w-full">
+                  <span className="font-medium text-muted-foreground">
+                    {currencyFormatter.format(comanda.total_comanda)}
+                  </span>
+                  <PaymentBadge payments={comanda.payments} total={comanda.total_comanda} />
                 </ItemDescription>
               </ItemContent>
               <ItemActions>
-                <Button variant="ghost" className="ml-auto hover:bg-laranja-500 hover:text-white text-laranja-500">
+                <Button variant="ghost" className="ml-auto text-muted-foreground">
                   <Link href={`/comandas/editar/${comanda.id}`}>
-                    <Pencil className="h-4 w-4" />
+                    <ChevronRight />
                   </Link>
                 </Button>
               </ItemActions>
