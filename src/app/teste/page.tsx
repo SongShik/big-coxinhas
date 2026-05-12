@@ -45,9 +45,8 @@ export default async function Teste() {
       </p>
 
       <p className="text-base">Pagina de comandas coisas a fazer</p>
-      <p className="text-base">fazer a data aparecer como ontem, hoje, amanhã ou proximos dias</p>
-      <p className="text-base">integrar para pagamento, não pago, parcial, pago</p>
-      <p className="text-base">Filtros rapidos como hoje, ontem, amanhã e um data picker</p>
+      <p className="text-base">integrar para pagamento, não pago, parcial, pago 😁</p>
+      <p className="text-base">Filtros rapidos como hoje, ontem, amanhã e um data picker 😁</p>
     </>
   )
 }

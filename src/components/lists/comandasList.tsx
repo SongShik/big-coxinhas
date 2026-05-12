@@ -1,14 +1,19 @@
 'use client'
 
-import { ChevronLeft, ChevronRight, SearchIcon } from 'lucide-react'
+import { format, isSameDay, isToday, isTomorrow, isYesterday } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { CalendarIcon, ChevronLeft, ChevronRight, SearchIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import { Field } from '@/components/ui/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
 import { currencyFormatter } from '@/utils/currencyFormatter'
 
 import { AvatarIcon } from '../comandas/avatarIcon'
@@ -17,6 +22,8 @@ import PaymentBadge from '../comandas/paymentBadge'
 
 const ITEMS_PER_PAGE_OPTIONS = [5, 10, 20]
 const DEFAULT_ITEMS_PER_PAGE = 10
+
+type DateFilter = 'yesterday' | 'today' | 'tomorrow' | 'custom' | null
 
 interface Comandas {
   id: string
@@ -34,12 +41,30 @@ export function ComandasList({ comandas }: ComandasListProps) {
   const [search, setSearch] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(DEFAULT_ITEMS_PER_PAGE)
+  const [dateFilter, setDateFilter] = useState<DateFilter>(null)
+  const [customDate, setCustomDate] = useState<Date | undefined>(undefined)
+  const [calendarOpen, setCalendarOpen] = useState(false)
 
   const filtered = useMemo(() => {
+    let result = comandas
+
     const q = search.toLowerCase().trim()
-    if (!q) return comandas
-    return comandas.filter((c) => c.clients.name.toLowerCase().includes(q))
-  }, [comandas, search])
+    if (q) {
+      result = result.filter((c) => c.clients.name.toLowerCase().includes(q))
+    }
+
+    if (dateFilter === 'yesterday') {
+      result = result.filter((c) => isYesterday(new Date(c.data_order)))
+    } else if (dateFilter === 'today') {
+      result = result.filter((c) => isToday(new Date(c.data_order)))
+    } else if (dateFilter === 'tomorrow') {
+      result = result.filter((c) => isTomorrow(new Date(c.data_order)))
+    } else if (dateFilter === 'custom' && customDate) {
+      result = result.filter((c) => isSameDay(new Date(c.data_order), customDate))
+    }
+
+    return result
+  }, [comandas, search, dateFilter, customDate])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / itemsPerPage))
 
@@ -58,16 +83,102 @@ export function ComandasList({ comandas }: ComandasListProps) {
     setCurrentPage(1)
   }
 
+  function handleDateFilter(filter: DateFilter) {
+    if (dateFilter === filter) {
+      setDateFilter(null)
+    } else {
+      setDateFilter(filter)
+      setCustomDate(undefined)
+    }
+    setCurrentPage(1)
+  }
+
+  function handleCustomDate(date: Date | undefined) {
+    setCustomDate(date)
+    setDateFilter(date ? 'custom' : null)
+    setCalendarOpen(false)
+    setCurrentPage(1)
+  }
+
   const startItem = filtered.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1
   const endItem = Math.min(currentPage * itemsPerPage, filtered.length)
 
+  const customDateLabel =
+    dateFilter === 'custom' && customDate ? format(customDate, "dd 'de' MMM", { locale: ptBR }) : 'Data'
+
   return (
     <div className="bg-background px-2 py-4 rounded-lg mt-6">
-      <Field className="max-w-sm mb-6">
+      <div className="flex flex-wrap items-center gap-2 mb-6">
+        <Button
+          size="sm"
+          variant={dateFilter === 'yesterday' ? 'default' : 'outline'}
+          className={cn(
+            dateFilter === 'yesterday' && 'bg-laranja-500 hover:bg-laranja-500 text-white border-transparent',
+          )}
+          onClick={() => handleDateFilter('yesterday')}
+        >
+          Ontem
+        </Button>
+
+        <Button
+          size="sm"
+          variant={dateFilter === 'today' ? 'default' : 'outline'}
+          className={cn(dateFilter === 'today' && 'bg-laranja-500 hover:bg-laranja-500 text-white border-transparent')}
+          onClick={() => handleDateFilter('today')}
+        >
+          Hoje
+        </Button>
+
+        <Button
+          size="sm"
+          variant={dateFilter === 'tomorrow' ? 'default' : 'outline'}
+          className={cn(
+            dateFilter === 'tomorrow' && 'bg-laranja-500 hover:bg-laranja-500 text-white border-transparent',
+          )}
+          onClick={() => handleDateFilter('tomorrow')}
+        >
+          Amanhã
+        </Button>
+
+        <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              size="sm"
+              variant={dateFilter === 'custom' ? 'default' : 'outline'}
+              className={cn(
+                'gap-2',
+                dateFilter === 'custom' && 'bg-laranja-500 hover:bg-laranja-500 text-white border-transparent',
+              )}
+            >
+              <CalendarIcon className="h-3.5 w-3.5" />
+              {customDateLabel}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar mode="single" selected={customDate} onSelect={handleCustomDate} locale={ptBR} />
+          </PopoverContent>
+        </Popover>
+
+        {dateFilter !== null && (
+          <Button
+            size="sm"
+            variant="ghost"
+            className="text-muted-foreground text-xs"
+            onClick={() => {
+              setDateFilter(null)
+              setCustomDate(undefined)
+              setCurrentPage(1)
+            }}
+          >
+            Limpar filtro
+          </Button>
+        )}
+      </div>
+      <Field className="max-w-sm mb-4">
         <InputGroup>
           <InputGroupInput
             id="inline-start-input"
-            placeholder="Pesquisar..."
+            placeholder="Pesquisar por nome..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
           />
@@ -76,7 +187,6 @@ export function ComandasList({ comandas }: ComandasListProps) {
           </InputGroupAddon>
         </InputGroup>
       </Field>
-
       {paginated.length === 0 ? (
         <p className="py-8 text-center text-muted-foreground text-sm">Nenhuma comanda encontrada.</p>
       ) : (
@@ -109,6 +219,7 @@ export function ComandasList({ comandas }: ComandasListProps) {
           </Item>
         ))
       )}
+
       <div className="flex flex-col gap-3 mt-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-1 text-sm text-muted-foreground">
           <span>{filtered.length === 0 ? 'Nenhum resultado' : `${startItem}-${endItem} de ${filtered.length}`}</span>
