@@ -29,10 +29,6 @@ export default async function Comandas() {
           <div>
             <h1 className="md:text-3xl text-base font-medium">Comandas</h1>
             <p className="text-muted-foreground md:mt-2 text-sm md:text-base">Gerencie as comandas</p>
-            <p className="text-muted-foreground md:mt-2 text-sm md:text-base">
-              fazer filtragem por cliente, data e organizar por data tb ou tipo, hoje, ontem, amanhã, quem sabe um
-              datapicker
-            </p>
           </div>
           <Button asChild size="lg">
             <Link href="/comandas/criar">

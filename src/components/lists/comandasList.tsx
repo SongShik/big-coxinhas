@@ -210,7 +210,7 @@ export function ComandasList({ comandas }: ComandasListProps) {
               </ItemContent>
               <ItemActions>
                 <Button variant="ghost" className="ml-auto text-muted-foreground">
-                  <Link href={`/comandas/editar/${comanda.id}`}>
+                  <Link href={`/comandas/${comanda.id}`}>
                     <ChevronRight />
                   </Link>
                 </Button>
